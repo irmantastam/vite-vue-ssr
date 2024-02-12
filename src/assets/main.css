@@ -1,0 +1,8 @@
+@import './base.css';
+
+#app {
+  padding: 4.5rem 0 0 0;
+  font-weight: normal;
+  background-image: url('/plant-background.jpg');
+  background-size: contain;
+}
