@@ -1,3 +1,6 @@
+// Example src:
+// https://github.com/bluwy/create-vite-extra/blob/master/template-ssr-vue/server.js
+
 import fs from 'node:fs/promises'
 import express from 'express'
 import process from 'node:process'
@@ -8,12 +11,10 @@ const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
 // Cached production assets
-const templateHtml = isProduction
-  ? await fs.readFile('./dist/client/index.html', 'utf-8')
-  : ''
+const templateHtml = isProduction ? await fs.readFile('./dist/client/index.html', 'utf-8') : ''
 const ssrManifest = isProduction
   ? await fs.readFile('./dist/client/.vite/ssr-manifest.json', 'utf-8')
-  : undefined
+  : {}
 
 // Create http server
 const app = express()
@@ -83,12 +84,12 @@ app.use('*', async (req, res) => {
     // 4. render the app HTML. This assumes entry-server.js's exported
     //    `render` function calls appropriate framework SSR APIs,
     //    e.g. ReactDOMServer.renderToString()
-    const rendered = await render(url, ssrManifest)
+    const [appHtml, preloadLinks] = await render(url, ssrManifest)
 
     // 5. Inject the app-rendered HTML into the template.
     const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--preload-links-->`, preloadLinks)
+      .replace(`<!--app-html-->`, appHtml ?? '')
 
     // 6. Send the rendered HTML back.
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)

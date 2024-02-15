@@ -1,10 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref, watchEffect } from 'vue'
+import { ref, onServerPrefetch, onMounted } from 'vue'
 
 const plants = ref([])
 
-watchEffect(async () => {
+const fetchPlants = async () => {
   const query = `{ 
     plantCollection {
       items {
@@ -38,9 +38,19 @@ watchEffect(async () => {
 
   try {
     const response = await fetch(fetchUrl, fetchOptions).then((response) => response.json())
-    plants.value = response.data.plantCollection.items
+    return response?.data?.plantCollection?.items
   } catch (error) {
     throw new Error('Could not receive the data from Contentful!')
+  }
+}
+
+onServerPrefetch(async () => {
+  plants.value = await fetchPlants()
+})
+
+onMounted(async () => {
+  if (!plants.value.length) {
+    plants.value = await fetchPlants()
   }
 })
 </script>
