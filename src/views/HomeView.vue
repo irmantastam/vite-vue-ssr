@@ -1,5 +1,4 @@
 <script setup>
-
 import PlantCard from '../components/PlantCard.vue'
 
 defineProps({
@@ -8,21 +7,19 @@ defineProps({
     required: true
   }
 })
-
 </script>
 
 <template>
   <main>
     <ul class="plants">
       <li v-for="plant in plants" :key="plant.sys.id" class="plant-container">
-        <PlantCard :plant="plant"/>
+        <PlantCard :plant="plant" />
       </li>
     </ul>
   </main>
 </template>
 
 <style scoped>
-
 main {
   background-color: white;
   min-height: 100vh;
@@ -38,17 +35,16 @@ main {
 
 .plant-container {
   margin: 10px auto 40px auto;
-  border: 1px solid #2D4A2F;
+  border: 1px solid #2d4a2f;
   outline: 2px solid white;
-  box-shadow: 3px 3px 0 #2D4A2F;
+  box-shadow: 3px 3px 0 #2d4a2f;
   position: relative;
 }
 
-@media screen and (min-width:992px) {
+@media screen and (min-width: 992px) {
   .plants {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
-
 </style>
