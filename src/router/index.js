@@ -1,7 +1,6 @@
 import { createRouter as _createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
-import HelloWorldView from '../views/HelloWorldView.vue'
 
 const createRouter = () =>
   _createRouter({
@@ -18,11 +17,6 @@ const createRouter = () =>
         path: '/about',
         name: 'about',
         component: AboutView
-      },
-      {
-        path: '/hello-world',
-        name: 'hello-world',
-        component: HelloWorldView
       }
     ]
   })
