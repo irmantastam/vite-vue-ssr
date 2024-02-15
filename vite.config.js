@@ -11,14 +11,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    plugins: [
-      vue(),
-    ],
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
-      }
-    },
     server: {
       proxy: {
         // with options: http://localhost:5173/api-> https://graphql.contentful.com/content/v1/spaces/:space-id
@@ -32,6 +24,14 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
       },
+    },
+    plugins: [
+      vue(),
+    ],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
     },
   }
 })

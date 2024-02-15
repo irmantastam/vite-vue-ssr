@@ -6,7 +6,7 @@ const plants = ref([])
 
 watchEffect(async () => {
   const query = `{ 
-    plantCollection {
+    plantCollection(limit: 3, where: { happiness: true }) {
       items {
         sys {
           id
