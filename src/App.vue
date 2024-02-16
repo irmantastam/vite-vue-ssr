@@ -1,58 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref, onServerPrefetch, onMounted } from 'vue'
-
-const plants = ref([])
-
-const fetchPlants = async () => {
-  const query = `{ 
-    plantCollection {
-      items {
-        sys {
-          id
-        }
-        commonName
-        scientificName
-        image {
-          url
-          description
-        }
-        wateringSchedule
-        lastWatered
-        sunlight
-        happiness
-      }
-    }
-  }`
-
-  const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${import.meta.env.VITE_CONTENTFUL_SPACE_ID}`
-
-  const fetchOptions = {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query })
-  }
-
-  try {
-    const response = await fetch(fetchUrl, fetchOptions).then((response) => response.json())
-    return response?.data?.plantCollection?.items
-  } catch (error) {
-    throw new Error('Could not receive the data from Contentful!')
-  }
-}
-
-onServerPrefetch(async () => {
-  plants.value = await fetchPlants()
-})
-
-onMounted(async () => {
-  if (!plants.value.length) {
-    plants.value = await fetchPlants()
-  }
-})
 </script>
 
 <template>
@@ -69,7 +16,7 @@ onMounted(async () => {
     </div>
   </header>
 
-  <RouterView :plants="plants" />
+  <RouterView />
   <footer>
     <div class="footer-content">
       <img alt="Contentful logo" class="logo" src="./assets/logo.svg" width="50" height="125" />

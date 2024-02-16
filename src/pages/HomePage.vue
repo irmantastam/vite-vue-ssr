@@ -1,22 +1,85 @@
 <script setup>
 import PlantCard from '../components/PlantCard.vue'
+import { ref, onServerPrefetch, onMounted } from 'vue'
 
-defineProps({
-  plants: {
-    type: Array,
-    required: true
+const getPlantsLocal = () => {
+  if (import.meta.env.SSR) {
+    return
+  }
+
+  const plantsDataJson = document.querySelector('#plants-data')?.dataset?.json
+  const plantsDataJsonParsed = plantsDataJson && JSON.parse(plantsDataJson)
+
+  return plantsDataJsonParsed
+}
+
+const plants = ref(getPlantsLocal())
+
+const fetchPlants = async () => {
+  const query = `{ 
+    plantCollection {
+      items {
+        sys {
+          id
+        }
+        commonName
+        scientificName
+        image {
+          url
+          description
+        }
+        wateringSchedule
+        lastWatered
+        sunlight
+        happiness
+      }
+    }
+  }`
+
+  const fetchUrl = `https://graphql.contentful.com/content/v1/spaces/${import.meta.env.VITE_CONTENTFUL_SPACE_ID}`
+
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query })
+  }
+
+  try {
+    const response = await fetch(fetchUrl, fetchOptions).then((response) => response.json())
+    return response?.data?.plantCollection?.items
+  } catch (error) {
+    throw new Error('Could not receive the data from Contentful!')
+  }
+}
+
+onServerPrefetch(async () => {
+  plants.value = await fetchPlants()
+})
+
+onMounted(async () => {
+  if (!plants.value) {
+    plants.value = getPlantsLocal() || (await fetchPlants())
   }
 })
 </script>
 
 <template>
   <main>
-    <ul class="plants">
+    <ul v-if="plants" class="plants">
       <li v-for="plant in plants" :key="plant.sys.id" class="plant-container">
         <PlantCard :plant="plant" />
       </li>
     </ul>
   </main>
+  <component
+    :is="'script'"
+    id="plants-data"
+    type="text/plain"
+    :data-json="JSON.stringify(plants)"
+  />
 </template>
 
 <style scoped>
