@@ -5,36 +5,11 @@ import { ref, watchEffect } from 'vue'
 const plants = ref([])
 
 watchEffect(async () => {
-  const query = `{ 
-    plantCollection {
-      items {
-        sys {
-          id
-        }
-        commonName
-        scientificName
-        image {
-          url
-          description
-        }
-        wateringSchedule
-        lastWatered
-        sunlight
-        happiness
-      }
-    }
-  }`
-
-  const fetchOptions = {
-    method: 'POST',
-    body: JSON.stringify({ query })
-  }
-
   try {
-    const response = await fetch(`/api`, fetchOptions).then((response) => response.json())
-    plants.value = response.data.plantCollection.items
+    const plantsResponse = await fetch(`/api/plants`).then((response) => response.json())
+    plants.value = plantsResponse?.data?.plantCollection?.items
   } catch (error) {
-    throw new Error('Could not receive the data from Contentful!')
+    throw new Error('Could not receive the data from API!', error)
   }
 })
 </script>
