@@ -16,38 +16,13 @@ const getPlantsLocal = () => {
 const plants = ref(getPlantsLocal())
 
 const fetchPlants = async () => {
-  const query = `{ 
-    plantCollection {
-      items {
-        sys {
-          id
-        }
-        commonName
-        scientificName
-        image {
-          url
-          description
-        }
-        wateringSchedule
-        lastWatered
-        sunlight
-        happiness
-      }
-    }
-  }`
-
-  const fetchOptions = {
-    method: 'POST',
-    body: JSON.stringify({ query })
-  }
-
   try {
-    const response = await fetch(import.meta.env.VITE_ROOT + '/api', fetchOptions).then(
-      (response) => response.json()
+    const plants = await fetch(import.meta.env.VITE_ROOT + '/api/plants').then((response) =>
+      response.json()
     )
-    return response?.data?.plantCollection?.items
+    return plants
   } catch (error) {
-    throw new Error('Could not receive the data from Contentful!')
+    throw new Error('Could not receive the data from API\n' + error)
   }
 }
 
