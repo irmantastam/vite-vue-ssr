@@ -9,7 +9,7 @@ watchEffect(async () => {
     const plantsResponse = await fetch(`/api/plants`).then((response) => response.json())
     plants.value = plantsResponse?.data?.plantCollection?.items
   } catch (error) {
-    throw new Error('Could not receive the data from API!', error)
+    throw new Error('Could not receive the data from API!\n' + error)
   }
 })
 </script>
