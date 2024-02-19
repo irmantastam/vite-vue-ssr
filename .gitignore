@@ -32,3 +32,4 @@ coverage
 
 # vite-plugin-api-routes generated API handlers
 .api
+.vercel
