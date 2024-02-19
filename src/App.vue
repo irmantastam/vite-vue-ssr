@@ -93,6 +93,12 @@ onMounted(async () => {
       >.
     </div>
   </footer>
+  <component
+    :is="'script'"
+    id="plants-data"
+    type="text/plain"
+    :data-json="JSON.stringify(plants)"
+  />
 </template>
 
 <style scoped>

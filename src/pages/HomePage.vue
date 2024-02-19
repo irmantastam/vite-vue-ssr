@@ -3,8 +3,7 @@ import PlantCard from '../components/PlantCard.vue'
 
 defineProps({
   plants: {
-    type: Array,
-    required: true
+    type: Array
   }
 })
 </script>
@@ -17,12 +16,6 @@ defineProps({
       </li>
     </ul>
   </main>
-  <component
-    :is="'script'"
-    id="plants-data"
-    type="text/plain"
-    :data-json="JSON.stringify(plants)"
-  />
 </template>
 
 <style scoped>
