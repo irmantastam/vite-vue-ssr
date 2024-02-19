@@ -1,16 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { ref, watchEffect } from 'vue'
-
-const plants = ref([])
-
-watchEffect(async () => {
-  try {
-    plants.value = await fetch(`/api/plants`).then((response) => response.json())
-  } catch (error) {
-    throw new Error('Could not receive the data from API!\n' + error)
-  }
-})
 </script>
 
 <template>
@@ -27,10 +16,10 @@ watchEffect(async () => {
     </div>
   </header>
 
-  <RouterView :plants="plants" />
+  <RouterView />
   <footer>
     <div class="footer-content">
-      <img alt="Contentful logo" class="logo" src="@/assets/logo.svg" width="50" height="125" />
+      <img alt="Contentful logo" class="logo" src="./assets/logo.svg" width="50" height="125" />
       <p>
         Created with <a href="https://www.contentful.com/" target="_blank">Contentful</a> and
         <a href="https://vuejs.org/" target="_blank">Vue.js</a>.
