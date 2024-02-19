@@ -2,5 +2,6 @@
   "rewrites": [
     { "source": "/", "destination": "/api/ssr" },
     { "source": "/about", "destination": "/api/ssr" }
-  ]
+  ],
+  "routes": [{ "src": "/", "dest": "/api/ssr" }]
 }
