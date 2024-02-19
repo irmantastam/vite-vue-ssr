@@ -33,7 +33,9 @@ export const GET = async (req, res) => {
           },
           body: JSON.stringify({ query })
         }
-      ).then((response) => response.json())
+      )
+        .then((response) => response.json())
+        .then((json) => json?.data?.plantCollection?.items)
     } catch (error) {
       throw new Error('Could not receive the data from Contentful!')
     }

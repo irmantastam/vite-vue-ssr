@@ -6,8 +6,7 @@ const plants = ref([])
 
 watchEffect(async () => {
   try {
-    const plantsResponse = await fetch(`/api/plants`).then((response) => response.json())
-    plants.value = plantsResponse?.data?.plantCollection?.items
+    plants.value = await fetch(`/api/plants`).then((response) => response.json())
   } catch (error) {
     throw new Error('Could not receive the data from API!\n' + error)
   }
