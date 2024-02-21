@@ -8,7 +8,7 @@ import 'dotenv/config'
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
-const port = process.env.PORT || 5173
+const port = process.env.PORT || (isProduction ? 4173 : 5173)
 const base = process.env.BASE || '/'
 
 // Cached production assets
@@ -29,7 +29,10 @@ if (!isProduction) {
   // 'custom', disabling Vite's own HTML serving logic so parent server
   // can take control
   vite = await createServer({
-    server: { middlewareMode: true },
+    server: {
+      middlewareMode: true,
+      fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '{plants,ssr}.js'] }
+    },
     appType: 'custom',
     base
   })
@@ -50,7 +53,7 @@ if (!isProduction) {
 
 // Create API endpoint to receive plants data from Contentful.
 app.get('/api/plants', async (req, res) => {
-  const query = `{ 
+  const query = `{
     plantCollection {
       items {
         sys {
