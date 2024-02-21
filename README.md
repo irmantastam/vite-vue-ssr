@@ -1,13 +1,10 @@
-# Vue SPA vs SSR vs SSG vs ISR examples
+# Vite + Vue SSR example
 
-A simple house plant tracker app made with [Contentful](https://contentful.com) and [Vue.js](https://vuejs.org/), based on: [Contentful Vue Starter](https://github.com/contentful/starter-vue-tracker).
+A simple house plant tracker app made with [Contentful](https://contentful.com) and [Vue.js](https://vuejs.org/), based on [Contentful Vue Starter](https://github.com/contentful/starter-vue-tracker).
 
-This is an example repo to showcase the different rendering techniques of Vue app, such as:
+This is a Server Side Rendering (SSR) example Vue app.
 
-- Single-Page Application (SPA).
-- Server-Side Rendering (SSR).
-- Static Site Generation (SSG).
-- Incremental Static Regeneration (ISR).
+It utilises Vercel serverless function to render page on server `/api/ssr`.
 
 ## Features
 
@@ -60,7 +57,7 @@ Go to the **Content** section in your space, then click on **Add entry** and sel
 
 From your contentful space, go to **Settings > API keys**. Create a new API key.
 
-If you ran `npm run setup` a `.env` file was created for you. If not, create a `.env` file (which will be ignored by Git):
+Create a `.env` file (which will be ignored by Git):
 
 Then set each variable in `.env`:
 
@@ -91,6 +88,6 @@ To deploy, run the following command and commit your changes to GitHub.
 npm run build
 ```
 
-Chose your favorite hosting provider such as Netlify or Vercel and create a new project. 
+Chose Vercel as your hosting provider and create a new project.
 
 **NOTE:** You'll have to configure the ***VITE_CONTENTFUL_SPACE_ID*** and ***VITE_CONTENTFUL_ACCESS_TOKEN*** values.
